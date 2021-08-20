@@ -23,7 +23,7 @@ class DataLoaderIAM:
                  data_dir: Path,
                  batch_size: int,
                  data_split: float = 0.95,
-                 fast: bool = False) -> None:
+                 fast: bool = True) -> None:
         """Loader for dataset."""
 
         assert data_dir.exists()
@@ -136,7 +136,7 @@ class DataLoaderIAM:
                 img = pickle.loads(data)
         else:
             img = cv2.imread(self.samples[i].file_path, cv2.IMREAD_GRAYSCALE)
-        print(i)
+        print(i,end=" ")
         assert(img is not None)
         return img
 
