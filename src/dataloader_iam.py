@@ -23,7 +23,7 @@ class DataLoaderIAM:
                  data_dir: Path,
                  batch_size: int,
                  data_split: float = 0.95,
-                 fast: bool = True) -> None:
+                 fast: bool = False) -> None:
         """Loader for dataset."""
 
         assert data_dir.exists()
@@ -37,7 +37,7 @@ class DataLoaderIAM:
         self.batch_size = batch_size
         self.samples = []
         #data_dir="./data/cvl-strings-eval/"
-        fichiers = [f for f in listdir(data_dir) if isfile(join(data_dir, f))]
+        fichiers = [f for f in listdir(data_dir) if isfile(join(data_dir, f)) and f.endswith('.png')]
         gt_text=[f.split("-")[0] for f in fichiers]
     
         """
@@ -78,7 +78,8 @@ class DataLoaderIAM:
          #while couple.__next__():
             #self.samples.append(Sample(couple))
         chars = set()
-        self.samples=[Sample(text,filename) for text,filename in zip(gt_text,fichiers)]
+        self.samples=[Sample(text,data_dir / filename) for text,filename in zip(gt_text,fichiers)]
+        print(self.samples[0:100])
         for c in gt_text:
             chars=chars.union( set(list(c)))
         # split into training and validation set: 95% - 5%
@@ -135,7 +136,8 @@ class DataLoaderIAM:
                 img = pickle.loads(data)
         else:
             img = cv2.imread(self.samples[i].file_path, cv2.IMREAD_GRAYSCALE)
-
+        print(i)
+        assert(img is not None)
         return img
 
     def get_next(self) -> Batch:
