@@ -7,7 +7,8 @@ import cv2
 import lmdb
 import numpy as np
 from path import Path
-
+from os import listdir
+from os.path import isfile, join
 Sample = namedtuple('Sample', 'gt_text, file_path')
 Batch = namedtuple('Batch', 'imgs, gt_texts, batch_size')
 
@@ -35,7 +36,11 @@ class DataLoaderIAM:
         self.curr_idx = 0
         self.batch_size = batch_size
         self.samples = []
-
+        #data_dir="./data/cvl-strings-eval/"
+        fichiers = [f for f in listdir(data_dir) if isfile(join(data_dir, f))]
+        gt_text=[f.split("-")[0] for f in fichiers]
+    
+        """
         f = open(data_dir / 'gt/words.txt')
         chars = set()
         bad_samples_reference = ['a01-117-05-02', 'r06-022-03-05']  # known broken images in IAM dataset
@@ -60,11 +65,22 @@ class DataLoaderIAM:
 
             # GT text are columns starting at 9
             gt_text = ' '.join(line_split[8:])
-            chars = chars.union(set(list(gt_text)))
+        """
 
-            # put sample into list
-            self.samples.append(Sample(gt_text, file_name))
 
+
+   
+
+            #chars = chars.union(set(list(gt_text)))
+
+        #couple=zip(gt_text,fichiers)
+        # put sample into list
+         #while couple.__next__():
+            #self.samples.append(Sample(couple))
+        chars = set()
+        self.samples=[Sample(text,filename) for text,filename in zip(gt_text,fichiers)]
+        for c in gt_text:
+            chars=chars.union( set(list(c)))
         # split into training and validation set: 95% - 5%
         split_idx = int(data_split * len(self.samples))
         self.train_samples = self.samples[:split_idx]
