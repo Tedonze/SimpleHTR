@@ -145,10 +145,5 @@ class DataLoaderIAM:
 
         imgs = [self._get_img(i) for i in batch_range]
         gt_texts = [self.samples[i].gt_text for i in batch_range]
-        print(gt_texts[0])
-        import matplotlib.pyplot as plt
-        plt.imshow(imgs[0])
-        plt.show()
-
         self.curr_idx += self.batch_size
         return Batch(imgs, gt_texts, len(imgs))
