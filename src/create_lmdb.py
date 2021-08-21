@@ -14,7 +14,8 @@ assert not (args.data_dir / 'lmdb').exists()
 env = lmdb.open(str(args.data_dir / 'lmdb'), map_size=1024 * 1024 * 1024 * 2)
 
 # go over all png files
-fn_imgs = list((args.data_dir / 'img').walkfiles('*.png'))
+#fn_imgs = list((args.data_dir / 'img').walkfiles('*.png'))
+fn_imgs = list((args.data_dir).walkfiles('*.png'))
 
 # and put the imgs into lmdb as pickled grayscale imgs
 with env.begin(write=True) as txn:

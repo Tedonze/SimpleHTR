@@ -147,6 +147,7 @@ def main():
     parser.add_argument('--early_stopping', help='Early stopping epochs.', type=int, default=25)
     parser.add_argument('--dump', help='Dump output of NN to CSV file(s).', action='store_true')
     args = parser.parse_args()
+    print(args.line_mode)
 
     # set chosen CTC decoder
     decoder_mapping = {'bestpath': DecoderType.BestPath,
@@ -186,3 +187,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+    
+

@@ -2,7 +2,7 @@ import pickle
 import random
 from collections import namedtuple
 from typing import Tuple
-
+import matplotlib.pyplot as plt
 import cv2
 import lmdb
 import numpy as np
@@ -136,8 +136,7 @@ class DataLoaderIAM:
                 img = pickle.loads(data)
         else:
             img = cv2.imread(self.samples[i].file_path, cv2.IMREAD_GRAYSCALE)
-        print(i,end=" ")
-        assert(img is not None)
+        
         return img
 
     def get_next(self) -> Batch:
@@ -146,6 +145,10 @@ class DataLoaderIAM:
 
         imgs = [self._get_img(i) for i in batch_range]
         gt_texts = [self.samples[i].gt_text for i in batch_range]
+        print(gt_texts[0])
+        import matplotlib.pyplot as plt
+        plt.imshow(imgs[0])
+        plt.show()
 
         self.curr_idx += self.batch_size
         return Batch(imgs, gt_texts, len(imgs))
